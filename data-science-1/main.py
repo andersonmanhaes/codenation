@@ -14,7 +14,7 @@
 
 # ## _Setup_ geral
 
-# In[16]:
+# In[6]:
 
 
 from IPython.core import getipython
@@ -26,7 +26,7 @@ import seaborn as sns
 from statsmodels.distributions.empirical_distribution import ECDF
 
 
-# In[17]:
+# In[7]:
 
 
 #%matplotlib inline
@@ -43,7 +43,7 @@ from statsmodels.distributions.empirical_distribution import ECDF
 
 # ### _Setup_ da parte 1
 
-# In[18]:
+# In[8]:
 
 
 np.random.seed(42)
@@ -54,32 +54,32 @@ dataframe = pd.DataFrame({"normal": sct.norm.rvs(20, 4, size=10000),
 
 # ## Inicie sua análise a partir da parte 1 a partir daqui
 
-# In[19]:
+# In[9]:
 
 
 # Sua análise da parte 1 começa aqui.
 dataframe.head()
 
 
-# In[20]:
+# In[10]:
 
 
 sns.distplot(dataframe);
 
 
-# In[21]:
+# In[11]:
 
 
 dataframe.describe()
 
 
-# In[22]:
+# In[12]:
 
 
 dataframe.info()
 
 
-# In[23]:
+# In[13]:
 
 
 tuple(round(dataframe.normal.quantile([0.25, 0.50, 0.75]) - dataframe.binomial.quantile([0.25, 0.50, 0.75]),3))
@@ -91,14 +91,13 @@ tuple(round(dataframe.normal.quantile([0.25, 0.50, 0.75]) - dataframe.binomial.q
 # 
 # Em outra palavras, sejam `q1_norm`, `q2_norm` e `q3_norm` os quantis da variável `normal` e `q1_binom`, `q2_binom` e `q3_binom` os quantis da variável `binom`, qual a diferença `(q1_norm - q1 binom, q2_norm - q2_binom, q3_norm - q3_binom)`?
 
-# In[24]:
+# In[22]:
 
 
 def q1():
     # Retorne aqui o resultado da questão 1.
     return (tuple(round(dataframe.normal.quantile([0.25, 0.50, 0.75])
             - dataframe.binomial.quantile([0.25, 0.50, 0.75]),3)))
-q1()
 
 
 # Para refletir:
@@ -111,7 +110,7 @@ q1()
 # 
 # Considere o intervalo $[\bar{x} - s, \bar{x} + s]$, onde $\bar{x}$ é a média amostral e $s$ é o desvio padrão. Qual a probabilidade nesse intervalo, calculada pela função de distribuição acumulada empírica (CDF empírica) da variável `normal`? Responda como uma único escalar arredondado para três casas decimais.
 
-# In[19]:
+# In[23]:
 
 
 def q2():
@@ -124,10 +123,9 @@ def q2():
     ecdf = ECDF(dataframe.normal)
     
     # Cálculo da probabilidade
-    prop = round(ecdf(interval_max) - ecdf(interval_min), 3)
+    prob = round(ecdf(interval_max) - ecdf(interval_min), 3)
     
-    return prop.item()
-q2()
+    return prob.item()
 
 
 # Para refletir:
@@ -141,7 +139,7 @@ q2()
 # 
 # Em outras palavras, sejam `m_binom` e `v_binom` a média e a variância da variável `binomial`, e `m_norm` e `v_norm` a média e a variância da variável `normal`. Quais as diferenças `(m_binom - m_norm, v_binom - v_norm)`?
 
-# In[26]:
+# In[24]:
 
 
 def q3():
@@ -149,7 +147,6 @@ def q3():
     dif_media = round(dataframe.binomial.mean() - dataframe.normal.mean(),3)
     dif_var = round(dataframe.binomial.var() - dataframe.normal.var(),3)
     return (dif_media, dif_var)
-q3()
 
 
 # Para refletir:
@@ -161,15 +158,15 @@ q3()
 
 # ### _Setup_ da parte 2
 
-# In[27]:
+# In[25]:
 
 
 stars = pd.read_csv("pulsar_stars.csv")
 
 stars.rename({old_name: new_name
               for (old_name, new_name)
-              in zip(stars.columns,
-                     ["mean_profile", "sd_profile", "kurt_profile", "skew_profile", "mean_curve", "sd_curve", "kurt_curve", "skew_curve", "target"])
+              in zip(stars.columns, ["mean_profile", "sd_profile", "kurt_profile", "skew_profile", "mean_curve", 
+                                     "sd_curve", "kurt_curve", "skew_curve", "target"])
              },
              axis=1, inplace=True)
 
@@ -179,7 +176,7 @@ stars.loc[:, "target"] = stars.target.astype(bool)
 
 # ## Inicie sua análise da parte 2 a partir daqui
 
-# In[28]:
+# In[26]:
 
 
 # Sua análise da parte 2 começa aqui.
@@ -199,7 +196,7 @@ stars.head()
 # 
 # Quais as probabilidade associadas a esses quantis utilizando a CDF empírica da variável `false_pulsar_mean_profile_standardized`? Responda como uma tupla de três elementos arredondados para três casas decimais.
 
-# In[29]:
+# In[20]:
 
 
 def q4():
@@ -210,7 +207,6 @@ def q4():
     quartis = [q80, q90, q95]
     resultQ4 = tuple([round(ecdffpm(x), 3) for x in quartis])
     return resultQ4
-q4()
 
 
 # Para refletir:
@@ -222,7 +218,7 @@ q4()
 # 
 # Qual a diferença entre os quantis Q1, Q2 e Q3 de `false_pulsar_mean_profile_standardized` e os mesmos quantis teóricos de uma distribuição normal de média 0 e variância 1? Responda como uma tupla de três elementos arredondados para três casas decimais.
 
-# In[30]:
+# In[21]:
 
 
 def q5():
@@ -233,7 +229,6 @@ def q5():
     dif = q - q_ppf
     resultQ5 = tuple(np.round(dif,3))
     return resultQ5
-q5()
 
 
 # Para refletir:
